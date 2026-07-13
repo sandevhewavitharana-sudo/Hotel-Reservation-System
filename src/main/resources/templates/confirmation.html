@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Confirmed</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="site">
+    <a th:href="@{/}">GRANDVIEW HOTEL</a>
+    <nav>
+        <a th:href="@{/}">Search</a>
+        <a th:href="@{/bookings}">Manage Bookings</a>
+    </nav>
+</header>
+
+<main>
+    <div class="alert success">Your booking request was created successfully.</div>
+    <h1>Booking #<span th:text="${booking.id}"></span></h1>
+    <p>Status: <span class="status-pill" th:classappend="'status-' + ${booking.status}" th:text="${booking.status}"></span></p>
+    <p>Room: <strong th:text="${booking.room.roomNumber} + ' (' + ${booking.room.roomType} + ')'"></strong></p>
+    <p>Guest: <strong th:text="${booking.guest.fullName}"></strong></p>
+    <p>Dates: <strong th:text="${booking.checkInDate} + ' &rarr; ' + ${booking.checkOutDate}"></strong>
+       (<span th:text="${booking.numberOfNights}"></span> nights)</p>
+    <p>Total price: <strong th:text="'$' + ${booking.totalPrice}"></strong></p>
+
+    <p><em>Note: bookings start as PENDING and need to be confirmed (then checked in, then checked out)
+       from the Manage Bookings page.</em></p>
+
+    <a class="btn" th:href="@{/bookings}">Go to Manage Bookings</a>
+</main>
+
+<footer>Grandview Hotel Booking System &mdash; academic demo project</footer>
+</body>
+</html>

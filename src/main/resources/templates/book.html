@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm your booking</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="site">
+    <a th:href="@{/}">GRANDVIEW HOTEL</a>
+    <nav>
+        <a th:href="@{/}">Search</a>
+        <a th:href="@{/bookings}">Manage Bookings</a>
+    </nav>
+</header>
+
+<main>
+    <h1 th:text="'Book Room ' + ${room.roomNumber}">Book Room</h1>
+
+    <div class="alert error" th:if="${error}" th:text="${error}"></div>
+
+    <p><strong th:text="${room.roomType}"></strong> &mdash;
+       <span th:text="${room.description}"></span></p>
+    <p>Rate: <strong th:text="'$' + ${room.pricePerNight} + ' / night'"></strong></p>
+    <p>Dates: <strong th:text="${checkIn} + ' to ' + ${checkOut}"></strong></p>
+
+    <form th:action="@{/book}" method="post">
+        <input type="hidden" name="roomId" th:value="${room.id}">
+        <input type="hidden" name="checkIn" th:value="${checkIn}">
+        <input type="hidden" name="checkOut" th:value="${checkOut}">
+
+        <div class="field" style="margin-bottom:1rem;">
+            <label for="guestId">Guest ID</label>
+            <input type="number" id="guestId" name="guestId" required>
+            <small>Register via POST /api/guests first if you don't have an ID yet.</small>
+        </div>
+
+        <div class="field" style="margin-bottom:1rem;">
+            <label for="numberOfGuests">Number of guests</label>
+            <input type="number" id="numberOfGuests" name="numberOfGuests" min="1"
+                   th:max="${room.roomType.maxOccupancy}" required>
+        </div>
+
+        <button type="submit">Confirm booking</button>
+    </form>
+</main>
+
+<footer>Grandview Hotel Booking System &mdash; academic demo project</footer>
+</body>
+</html>

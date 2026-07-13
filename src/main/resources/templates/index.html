@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Grandview Hotel &mdash; Book a Room</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="site">
+    <a th:href="@{/}">GRANDVIEW HOTEL</a>
+    <nav>
+        <a th:href="@{/}">Search</a>
+        <a th:href="@{/bookings}">Manage Bookings</a>
+    </nav>
+</header>
+
+<main>
+    <h1>Find your room</h1>
+
+    <form class="search-panel" th:action="@{/search}" method="get">
+        <div class="field">
+            <label for="checkIn">Check-in</label>
+            <input type="date" id="checkIn" name="checkIn" th:value="${checkIn}" required>
+        </div>
+        <div class="field">
+            <label for="checkOut">Check-out</label>
+            <input type="date" id="checkOut" name="checkOut" th:value="${checkOut}" required>
+        </div>
+        <div class="field">
+            <label for="roomType">Room type</label>
+            <select id="roomType" name="roomType">
+                <option value="">Any</option>
+                <option value="SINGLE">Single</option>
+                <option value="DOUBLE">Double</option>
+                <option value="DELUXE">Deluxe</option>
+                <option value="SUITE">Suite</option>
+            </select>
+        </div>
+        <button type="submit">Search availability</button>
+    </form>
+
+    <h2 th:text="${searched} ? 'Available rooms for your dates' : 'All rooms'">Rooms</h2>
+
+    <p th:if="${#lists.isEmpty(rooms)}">No rooms match your search. Try different dates.</p>
+
+    <div class="room-grid">
+        <div class="room-card" th:each="room : ${rooms}">
+            <span class="type-tag" th:text="${room.roomType}">TYPE</span>
+            <h3 th:text="'Room ' + ${room.roomNumber}">Room 101</h3>
+            <p th:text="${room.description}">Description</p>
+            <p class="price">
+                <span th:text="'$' + ${room.pricePerNight}"></span>
+                <span> / night</span>
+            </p>
+            <a th:if="${checkIn != null and checkOut != null}"
+               class="btn gold"
+               th:href="@{/book/{id}(id=${room.id}, checkIn=${checkIn}, checkOut=${checkOut})}">
+                Book this room
+            </a>
+        </div>
+    </div>
+</main>
+
+<footer>Grandview Hotel Booking System &mdash; academic demo project</footer>
+</body>
+</html>

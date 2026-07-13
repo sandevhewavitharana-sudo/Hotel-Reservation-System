@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Bookings</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="site">
+    <a th:href="@{/}">GRANDVIEW HOTEL</a>
+    <nav>
+        <a th:href="@{/}">Search</a>
+        <a th:href="@{/bookings}">Manage Bookings</a>
+    </nav>
+</header>
+
+<main>
+    <h1>All bookings</h1>
+
+    <p th:if="${#lists.isEmpty(bookings)}">No bookings yet.</p>
+
+    <table th:if="${not #lists.isEmpty(bookings)}">
+        <thead>
+        <tr>
+            <th>ID</th><th>Guest</th><th>Room</th><th>Dates</th><th>Total</th><th>Status</th><th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="b : ${bookings}">
+            <td th:text="${b.id}"></td>
+            <td th:text="${b.guest.fullName}"></td>
+            <td th:text="${b.room.roomNumber}"></td>
+            <td th:text="${b.checkInDate} + ' &rarr; ' + ${b.checkOutDate}"></td>
+            <td th:text="'$' + ${b.totalPrice}"></td>
+            <td><span class="status-pill" th:classappend="'status-' + ${b.status}" th:text="${b.status}"></span></td>
+            <td class="actions">
+                <form th:if="${b.status.name() == 'PENDING'}" th:action="@{/bookings/{id}/confirm(id=${b.id})}" method="post">
+                    <button type="submit">Confirm</button>
+                </form>
+                <form th:if="${b.status.name() == 'CONFIRMED'}" th:action="@{/bookings/{id}/check-in(id=${b.id})}" method="post">
+                    <button type="submit">Check in</button>
+                </form>
+                <form th:if="${b.status.name() == 'CHECKED_IN'}" th:action="@{/bookings/{id}/check-out(id=${b.id})}" method="post">
+                    <button type="submit">Check out</button>
+                </form>
+                <form th:if="${b.status.name() == 'PENDING' or b.status.name() == 'CONFIRMED' or b.status.name() == 'CHECKED_IN'}"
+                      th:action="@{/bookings/{id}/cancel(id=${b.id})}" method="post">
+                    <button type="submit" class="cancel">Cancel</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<footer>Grandview Hotel Booking System &mdash; academic demo project</footer>
+</body>
+</html>
