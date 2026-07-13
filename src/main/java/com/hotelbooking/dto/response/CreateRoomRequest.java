@@ -29,4 +29,7 @@ public class CreateRoomRequest {
 
     public String getRoomNumber() {
     }
+
+    public RoomType getRoomType() {
+    }
 }

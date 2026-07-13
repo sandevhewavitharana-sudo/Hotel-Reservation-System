@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: booking
+  datasource:
+    url: jdbc:postgresql://localhost:5454/hoteldb
+    driver-class-name: org.postgresql.Driver
+    username: admin
+    password: admin
+
+    security:
+      oath2:
+        resourceserver:
+            jwt:
+                issuer-uri: http://localhost:9001/realms/hotel-booking
+    jpa:
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      hibernate:
+        ddl-auto: update
