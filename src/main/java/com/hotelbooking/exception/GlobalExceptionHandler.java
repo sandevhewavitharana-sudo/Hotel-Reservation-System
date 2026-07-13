@@ -1,6 +1,9 @@
 package com.hotelbooking.exception;
 
+import com.hotelbooking.dto.response.CreateRoomRequest;
+import com.hotelbooking.model.Room;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.DuplicateFormatFlagsException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -63,5 +67,12 @@ public class GlobalExceptionHandler {
         body.put("message", message);
 
         return ResponseEntity.status(status).body(body);
+    }
+
+    @Transactional
+    public Room createRoom(CreateRoomRequest request) {
+        throw new DuplicateFormatFlagsException(
+                "Room number already exists with " + request.getRoomNumber()
+        );
     }
 }

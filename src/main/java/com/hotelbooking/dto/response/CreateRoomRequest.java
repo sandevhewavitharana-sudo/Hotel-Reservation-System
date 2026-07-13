@@ -27,4 +27,6 @@ public class CreateRoomRequest {
     private String description;
 
 
+    public String getRoomNumber() {
+    }
 }

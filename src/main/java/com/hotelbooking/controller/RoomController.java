@@ -67,5 +67,11 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRoom);
     }
 
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Room> createRoomWithId(@PathVariable Long id, @Valid @RequestBody Room room) {
+        Room createdRoom = roomService.addRoom(room);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdRoom);
+    }
 
 }
